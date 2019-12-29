@@ -32,15 +32,15 @@ d3.json(link, function(data) {
   }
   function color(magnitude) {
     switch (true) {
-      case magnitude > 5:
+      case magnitude >= 5:
         return "#EA2C2C";
-      case magnitude > 4:
+      case magnitude >= 4:
         return "#EA822C";
-      case magnitude > 3:
+      case magnitude >= 3:
         return "#EE9C00";
-      case magnitude > 2:
+      case magnitude >= 2:
         return "#EECC00";
-      case magnitude > 1:
+      case magnitude >= 1:
         return "#D4EE00";
       default:
         return "#98EE00";
@@ -62,6 +62,22 @@ d3.json(link, function(data) {
       layer.bindPopup (feature.properties.place, feature.properties.mag)
     } 
   }).addTo(myMap)
-});
+  
+  // Still need to add legend
+  var legend = L.control({position: 'bottomright'});
 
-// Still need to add legend
+  legend.onAdd = function(map) {
+    console.log("hello")
+    var div = L.DomUtil.create('div', 'info legend');
+
+      for (let i = 0; i <= 5; i++) {
+        div.innerHTML +=
+          '<i style="background:' + color(i) + '"></i> ' +
+          i + (i + 1 <= 5 ? '&ndash;' + (i + 1) + '<br />' : '+');
+      }
+
+      return div
+  };
+
+  legend.addTo(myMap);
+});
